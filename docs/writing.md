@@ -108,4 +108,4 @@ copies; the build removes the original files from its output.
 
 1. Run `npm run dev` and open the printed address; drafts are visible there. With VS Code Remote
    SSH, the port is forwarded automatically.
-2. Commit the change and deploy as described in [deployment.md](deployment.md).
+2. Commit and push the change; the host deploys `main` once CI passes ([deployment.md](deployment.md)).

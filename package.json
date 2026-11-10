@@ -14,8 +14,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test:deploy && npm run test:photos && npm run build && npm run test:dist",
-    "test:deploy": "for script in deploy/*.sh; do bash -n \"$script\" || exit 1; done",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test:photos && npm run build && npm run test:dist",
     "test:dist": "python3 -B scripts/check-dist.py",
     "photos": "node scripts/photos.mjs",
     "test:photos": "node scripts/photos.mjs --check"

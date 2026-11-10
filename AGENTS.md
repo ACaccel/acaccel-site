@@ -17,10 +17,10 @@ export PATH="$PWD/.conda/bin:$PATH"
 npm run dev      # local dev server
 npm run format   # apply Prettier
 npm run photos   # strip metadata from album photos before committing them
-npm run check    # format, lint, types, deploy script syntax, photo metadata, build, dist checks
+npm run check    # format, lint, types, photo metadata, build, dist checks
 ```
 
-Deployment and rollback: [docs/deployment.md](docs/deployment.md).
+Deployment (by the host's LCM) and what the site needs from it: [docs/deployment.md](docs/deployment.md).
 
 ## Layout
 
@@ -36,7 +36,6 @@ Deployment and rollback: [docs/deployment.md](docs/deployment.md).
 | `src/integrations/`                       | Build hook removing source images copied into `dist/`         |
 | `scripts/check-dist.py`                   | Fails on inline script or unreferenced images in `dist/`      |
 | `scripts/photos.mjs`                      | Strips photo metadata; `--check` mode runs in `npm run check` |
-| `deploy/`                                 | Release deploy and rollback scripts                           |
 | `environment.yml`, `scripts/setup-env.sh` | Toolchain environment                                         |
 | `docs/roadmap.md`                         | Audience, site structure, design, next directions             |
 

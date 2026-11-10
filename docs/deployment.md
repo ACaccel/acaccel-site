@@ -1,43 +1,23 @@
 # Deployment
 
-The built site is copied into a release directory and a `current` symlink points at it. No server
-process runs. Nginx and TLS are not part of this repository: the host's LCM ingress serves the
-`current` link, as described in the "Ingress" and "Routes" sections of `docs/operations.md` in the LCM repository. This
-repository's scripts only manage releases.
+The host's LCM builds and publishes the site as a static `managed` service; this repository holds
+no deployment, Nginx or TLS code. How LCM builds, publishes and rolls back is described in
+`docs/services.md` of the LCM repository; routing is in the "Ingress" and "Routes" sections of its
+`docs/operations.md`. No server process runs.
 
-## Requirements
+## What LCM runs
 
-- Uncommitted changes are allowed; their release name ends in `-dirty`, so the live site cannot
-  be rebuilt from the commit alone. Commit first when the release must be traceable.
-- Project toolchain installed; see [AGENTS.md](../AGENTS.md#setup-and-validation).
-- Deployment user with sudo; the host has `rsync` and `flock`.
-- The host's ingress grants this site the route prefix `/` with a static directory of
-  `/var/www/acaccel-site/current` (see [Ingress route](#ingress-route)).
+| Step    | Value                                                                        |
+| ------- | ---------------------------------------------------------------------------- |
+| Gate    | GitHub CI (`.github/workflows/ci.yml`, `npm run check`) passes on the commit |
+| Build   | `npm ci && npm run build` with the Node version of `package.json` `engines`  |
+| Output  | `dist/`                                                                      |
+| Publish | `dist/` as the static root; `_astro/` files of earlier builds kept 14 days   |
 
-## Deploy
-
-```sh
-bash deploy/deploy.sh
-```
-
-1. As the invoking user: warns about uncommitted changes, runs `npm run check`, then reruns
-   itself through `sudo`.
-2. Takes `/run/lock/acaccel-site-deploy.lock`.
-3. Copies `dist/` to `releases/<UTC time>-<commit>[-dirty]/` and switches the `current` symlink.
-4. Checks that `current/index.html` and `current/404.html` exist.
-5. Keeps the newest five releases.
-
-On any failure, including an interrupt, the script points `current` back at the previous release
-and removes the new one. The ingress follows the link per request, so a deploy or rollback needs
-no ingress change.
-
-## Roll back
-
-```sh
-bash deploy/rollback.sh
-```
-
-Points `current` at the release immediately before it.
+- The build does not run the checks; CI does.
+- Keeping old `_astro/` files lets pages that are already open load their hashed assets after a
+  deploy.
+- A rollback publishes the previous build again.
 
 ## Ingress route
 
@@ -45,17 +25,21 @@ What the site needs from the ingress:
 
 | Need                | Value                                                             |
 | ------------------- | ----------------------------------------------------------------- |
-| Static root         | `/var/www/acaccel-site/current` (host grant, `external` service)  |
+| Static root         | The service's publish directory (host grant)                      |
 | Prefix              | `/`                                                               |
 | Not found           | `404.html`, served with status 404                                |
 | Immutable cache     | `_astro/` (hashed build output, cached for a year, no fallback)   |
 | Former English path | `/en/` redirects to `/`                                           |
 | Security headers    | The CSP below; the ingress adds `nosniff` and the referrer policy |
 
-The host grant (prefix and static root) lives in the host configuration; the presentation options
-are the `route` section of the site's LCM Resource document:
+The host grant (prefix and static root) lives in the host configuration; the build, publish and
+presentation options are the site's LCM Resource document:
 
 ```yaml
+publish:
+  dir: .
+  retain: [_astro/]
+  retainDays: 14
 route:
   static:
     notFound: 404.html
@@ -78,10 +62,3 @@ Notes:
   because pages change in place under the same URL.
 - A service on the same host under a longer prefix (for example `/name/`) takes precedence over
   this site's `/`.
-
-## Host paths
-
-| Path                              | Contents                    |
-| --------------------------------- | --------------------------- |
-| `/var/www/acaccel-site/current`   | Symlink to the live release |
-| `/var/www/acaccel-site/releases/` | Release directories         |
