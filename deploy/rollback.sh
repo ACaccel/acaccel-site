@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Point the live site at the release before the current one. Nginx is not touched.
+# Point the live site at the release before the current one. The ingress serves the link as is.
 set -Eeuo pipefail
 
 if [[ $EUID -ne 0 ]]; then

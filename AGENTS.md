@@ -4,7 +4,7 @@ Authoritative project rule set; `CLAUDE.md` points here.
 
 ## Stack
 
-- Static personal website for `https://acserver.csie.org/`, served directly by the host's Nginx.
+- Static personal website for `https://acserver.csie.org/`, served from a release directory by the host's LCM ingress.
 - Astro and TypeScript; UI components are React with Material UI (Emotion), rendered at build
   time only. Prettier, ESLint, and `astro check`.
 - Node 24 LTS from the project-local conda environment in `.conda/`; do not use the system Node.
@@ -17,7 +17,7 @@ export PATH="$PWD/.conda/bin:$PATH"
 npm run dev      # local dev server
 npm run format   # apply Prettier
 npm run photos   # strip metadata from album photos before committing them
-npm run check    # format, lint, types, deploy tests, photo metadata, build, dist checks
+npm run check    # format, lint, types, deploy script syntax, photo metadata, build, dist checks
 ```
 
 Deployment and rollback: [docs/deployment.md](docs/deployment.md).
@@ -36,14 +36,14 @@ Deployment and rollback: [docs/deployment.md](docs/deployment.md).
 | `src/integrations/`                       | Build hook removing source images copied into `dist/`         |
 | `scripts/check-dist.py`                   | Fails on inline script or unreferenced images in `dist/`      |
 | `scripts/photos.mjs`                      | Strips photo metadata; `--check` mode runs in `npm run check` |
-| `deploy/`                                 | Nginx snippets, site-file editor and tests, deploy scripts    |
+| `deploy/`                                 | Release deploy and rollback scripts                           |
 | `environment.yml`, `scripts/setup-env.sh` | Toolchain environment                                         |
 | `docs/roadmap.md`                         | Audience, site structure, design, next directions             |
 
 ## Rules
 
 - Content is Traditional Chinese (Taiwan); an English edition is undecided. The old `/en/` path
-  redirects to `/` in Nginx.
+  redirects to `/` at the ingress.
 - Every visible text lives in `content/` (short texts in `site.yaml`); code reads it through
   `text` from `src/data/text.ts`. ESLint rejects Chinese text written directly in `src/`.
 - The repository is public: list only public services, and commit no private service names,
@@ -59,4 +59,5 @@ Deployment and rollback: [docs/deployment.md](docs/deployment.md).
   (`npm run test:dist` enforces this).
 - Album photos are public: commit them only after `npm run photos` removes their metadata.
 - Output stays fully static; the site runs no server process.
-- Never edit other projects' managed blocks in the shared Nginx site file.
+- This repository holds no Nginx or TLS configuration; routing is the ingress route in
+  [docs/deployment.md](docs/deployment.md#ingress-route).

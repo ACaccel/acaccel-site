@@ -5,5 +5,5 @@ hobbies, projects, and the public services hosted on the same domain.
 
 - [AGENTS.md](AGENTS.md): setup, validation, layout, and project rules
 - [docs/writing.md](docs/writing.md): write posts and edit every page's content
-- [docs/deployment.md](docs/deployment.md): deploy, rollback, and host paths
+- [docs/deployment.md](docs/deployment.md): deploy, rollback, host paths, and the ingress route the site needs
 - [docs/roadmap.md](docs/roadmap.md): audience, site structure, and next directions
