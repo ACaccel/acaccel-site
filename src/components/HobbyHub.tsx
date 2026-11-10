@@ -16,7 +16,7 @@ interface Props {
 export default function HobbyHub({ categories, counts, posts }: Props) {
   return (
     <ThemeRoot>
-      <PageHeader title={text.hobbies.title} description={text.hobbies.description} />
+      <PageHeader title={text.hobbies.title} />
       <CardGrid>
         {categories.map((category) => (
           <li key={category.id}>

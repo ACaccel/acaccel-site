@@ -1,5 +1,6 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
+import ServiceStatus from '../components/ServiceStatus.astro';
 import HomePage from '../components/HomePage';
 import { profile } from '../data/profile';
 import { site } from '../data/site';
@@ -32,4 +33,5 @@ const now = nowEntry && {
     projects={projects}
     services={services}
   />
+  <ServiceStatus />
 </PageLayout>

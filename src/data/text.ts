@@ -38,6 +38,7 @@ const schema = z.strictObject({
     services: line,
     about: line,
     label: line,
+    breadcrumb: line,
   }),
   footer: z.strictObject({ email: line, now: line, rss: line, source: line }),
   home: z.strictObject({
@@ -56,7 +57,6 @@ const schema = z.strictObject({
     allTags: line,
     tagsLabel: line,
     tagDescription: template('tag'),
-    tagCount: template('count'),
     updated: template('date'),
     readingTime: template('minutes'),
     toc: line,
@@ -83,7 +83,9 @@ const schema = z.strictObject({
     empty: line,
     open: line,
     source: line,
-    status: z.strictObject({ active: line, beta: line, archived: line }),
+    status: z.strictObject({ active: line, beta: line, maintenance: line, archived: line }),
+    /** Replaces the status when the live check gets no answer. */
+    unreachable: line,
   }),
   projects: z.strictObject({
     title: line,
@@ -100,27 +102,16 @@ const schema = z.strictObject({
     relatedPosts: line,
     readPost: line,
     link: line,
-    groupsLabel: line,
     games: z.strictObject({
       title: line,
       description: optional,
       status: z.strictObject({ playing: line, finished: line, paused: line }),
-    }),
-    media: z.strictObject({
-      title: line,
-      description: optional,
-      types: z.strictObject({ book: line, anime: line, drama: line }),
-      status: z.strictObject({
-        book: z.strictObject({ 'in-progress': line, finished: line, paused: line }),
-        watch: z.strictObject({ 'in-progress': line, finished: line, paused: line }),
-      }),
     }),
     photos: z.strictObject({
       title: line,
       description: optional,
       empty: line,
       albumCount: template('count'),
-      back: line,
     }),
   }),
   notFound: z.strictObject({ title: line, message: line, home: line }),

@@ -1,4 +1,3 @@
-import AutoStories from '@mui/icons-material/AutoStories';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import SportsEsports from '@mui/icons-material/SportsEsports';
 import Box from '@mui/material/Box';
@@ -10,7 +9,6 @@ import type { HobbyCategory, HobbyCategoryId } from '../data/hobbies';
 
 const icons: Record<HobbyCategoryId, typeof SportsEsports> = {
   games: SportsEsports,
-  media: AutoStories,
   photos: PhotoCamera,
 };
 
@@ -26,10 +24,11 @@ export default function HobbyCategoryCard({ category, countLabel }: Props) {
   return (
     <Card sx={{ height: '100%' }}>
       <CardActionArea href={category.href} sx={{ height: '100%', alignItems: 'flex-start' }}>
-        <CardContent>
+        <CardContent sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
           <Box
             sx={{
               display: 'inline-flex',
+              flexShrink: 0,
               p: 1,
               borderRadius: 1,
               color: 'primary.main',
@@ -38,19 +37,22 @@ export default function HobbyCategoryCard({ category, countLabel }: Props) {
           >
             <Icon />
           </Box>
-          <Typography variant="h3" component="h3" sx={{ mt: 1.5 }}>
-            {category.title}
-          </Typography>
-          {category.description && (
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              {category.description}
+          {/* The icon box is 40px tall; the margin centers a one-line title beside it. */}
+          <Box sx={{ minWidth: 0, mt: 0.75 }}>
+            <Typography variant="h3" component="h3">
+              {category.title}
             </Typography>
-          )}
-          {countLabel && (
-            <Typography variant="caption" color="primary" component="p" sx={{ mt: 1.5 }}>
-              {countLabel}
-            </Typography>
-          )}
+            {category.description && (
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                {category.description}
+              </Typography>
+            )}
+            {countLabel && (
+              <Typography variant="caption" color="primary" component="p" sx={{ mt: 1 }}>
+                {countLabel}
+              </Typography>
+            )}
+          </Box>
         </CardContent>
       </CardActionArea>
     </Card>

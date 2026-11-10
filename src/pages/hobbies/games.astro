@@ -1,7 +1,7 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import LogPage from '../../components/LogPage';
-import { pageTitle } from '../../data/site';
+import { pageTitle, trails } from '../../data/site';
 import { getGameGroups, hobbyCategory } from '../../data/hobbies';
 import { getPosts, postsWithTag, toPostSummary } from '../../data/posts';
 
@@ -14,6 +14,7 @@ const relatedPosts = postsWithTag(await getPosts(), category.tag).map(toPostSumm
   <LogPage
     title={category.title}
     description={category.description}
+    trail={trails.hobbies}
     groups={groups}
     relatedPosts={relatedPosts}
     relatedTag={category.tag}

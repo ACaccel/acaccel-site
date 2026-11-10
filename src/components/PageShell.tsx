@@ -15,7 +15,17 @@ import { text } from '../data/text';
 
 export type PageWidth = 'wide' | 'narrow';
 
-export const pageMaxWidth: Record<PageWidth, number> = { wide: 1100, narrow: 760 };
+export const pageMaxWidth: Record<PageWidth, number> = { wide: 1280, narrow: 760 };
+
+// Hidden on screen but still read as the home link's name.
+const visuallyHidden = {
+  position: 'absolute',
+  width: '1px',
+  height: '1px',
+  overflow: 'hidden',
+  clip: 'rect(0 0 0 0)',
+  whiteSpace: 'nowrap',
+} as const;
 
 interface Props {
   currentPath: string;
@@ -49,10 +59,7 @@ export default function PageShell({ currentPath, width, showNow, children }: Pro
         }}
       >
         <Container maxWidth={false} sx={{ maxWidth: pageMaxWidth.wide }}>
-          <Toolbar
-            disableGutters
-            sx={{ flexWrap: 'wrap', columnGap: 2, rowGap: 0.5, py: { xs: 1, sm: 0 } }}
-          >
+          <Toolbar disableGutters sx={{ columnGap: 2 }}>
             <Link
               href="/"
               color="inherit"
@@ -60,18 +67,23 @@ export default function PageShell({ currentPath, width, showNow, children }: Pro
               sx={{ display: 'flex', alignItems: 'center', gap: 1, mr: 'auto', fontWeight: 700 }}
             >
               <Box component="img" src="/favicon.svg" alt="" width={28} height={28} />
-              {profile.name}
+              {/* Phones show only the icon so the five nav labels fit on the same row. */}
+              <Box
+                component="span"
+                sx={(theme) => ({ [theme.breakpoints.down('sm')]: visuallyHidden })}
+              >
+                {profile.name}
+              </Box>
             </Link>
-            {/* Five short labels fit on phones, so the nav wraps instead of hiding in a menu. */}
+            {/* Five short labels fit on phones, so the nav stays visible instead of in a menu. */}
             <Box
               component="nav"
               aria-label={text.nav.label}
               sx={{
                 display: 'flex',
-                gap: 0.5,
+                gap: { xs: 0, sm: 0.5 },
                 overflowX: 'auto',
-                width: { xs: '100%', sm: 'auto' },
-                mx: { xs: -1, sm: 0 },
+                mr: { xs: -1, sm: 0 },
               }}
             >
               {site.nav.map((item) => {
@@ -82,7 +94,7 @@ export default function PageShell({ currentPath, width, showNow, children }: Pro
                     href={item.href}
                     color={active ? 'primary' : 'inherit'}
                     aria-current={active ? 'page' : undefined}
-                    sx={{ minWidth: 0, px: 1.5, flexShrink: 0 }}
+                    sx={{ minWidth: 0, px: { xs: 1, sm: 1.5 }, flexShrink: 0 }}
                   >
                     {item.label}
                   </Button>
@@ -92,19 +104,20 @@ export default function PageShell({ currentPath, width, showNow, children }: Pro
           </Toolbar>
         </Container>
       </AppBar>
+      {/* Narrow pages keep the wide container's left edge so content lines up with the header. */}
       <Container
         component="main"
         maxWidth={false}
-        sx={{ maxWidth: pageMaxWidth[width], py: { xs: 4, md: 6 } }}
+        sx={{ flexGrow: 1, maxWidth: pageMaxWidth.wide, py: { xs: 3, md: 4 } }}
       >
-        {children}
+        <Box sx={{ maxWidth: pageMaxWidth[width] }}>{children}</Box>
       </Container>
-      <Box component="footer" sx={{ borderTop: 1, borderColor: 'divider', mt: 8 }}>
+      <Box component="footer" sx={{ borderTop: 1, borderColor: 'divider', mt: 6 }}>
         <Container
           maxWidth={false}
           sx={{
             maxWidth: pageMaxWidth.wide,
-            py: 4,
+            py: 3,
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'space-between',

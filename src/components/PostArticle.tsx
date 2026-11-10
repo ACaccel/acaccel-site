@@ -9,7 +9,9 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ThemeRoot from '../theme/ThemeRoot';
 import Prose from './Prose';
+import Trail from './Trail';
 import { tagHref } from '../data/posts';
+import { trails } from '../data/site';
 import { around, fill, text } from '../data/text';
 
 export interface TocHeading {
@@ -48,7 +50,8 @@ export default function PostArticle(props: Props) {
       <Box
         sx={{
           display: 'grid',
-          justifyContent: 'center',
+          // The table of contents sits at the right edge of the page, apart from the article.
+          justifyContent: 'space-between',
           columnGap: 6,
           gridTemplateColumns: {
             xs: `minmax(0, ${articleMaxWidth}px)`,
@@ -64,7 +67,8 @@ export default function PostArticle(props: Props) {
           data-copy-failed={text.posts.copyFailed}
           sx={{ minWidth: 0 }}
         >
-          <Box component="header" sx={{ mb: 4 }}>
+          <Box component="header" sx={{ mb: 3 }}>
+            <Trail links={trails.posts} />
             <Typography variant="h1">{title}</Typography>
             <Typography color="text.secondary" sx={{ mt: 1.5 }}>
               <time dateTime={dateISO}>{date}</time>
@@ -103,8 +107,8 @@ export default function PostArticle(props: Props) {
                 display: 'grid',
                 gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
                 gap: 2,
-                mt: 8,
-                pt: 4,
+                mt: 6,
+                pt: 3,
                 borderTop: 1,
                 borderColor: 'divider',
               }}

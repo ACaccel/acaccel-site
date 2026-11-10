@@ -1,0 +1,33 @@
+---
+// Live status for service cards marked by ServiceCard; include once on pages that list services.
+---
+
+<script>
+  // Long enough for a slow cold start, short enough that a dead service is reported promptly.
+  const timeoutMs = 8000;
+
+  async function isReachable(path: string): Promise<boolean> {
+    try {
+      // A redirect means the service answered; following it could leave this site, which the
+      // CSP blocks.
+      const response = await fetch(path, {
+        cache: 'no-store',
+        redirect: 'manual',
+        signal: AbortSignal.timeout(timeoutMs),
+      });
+      return response.ok || response.type === 'opaqueredirect';
+    } catch {
+      return false;
+    }
+  }
+
+  for (const card of document.querySelectorAll<HTMLElement>('[data-service-check]')) {
+    const path = card.dataset['serviceCheck'];
+    if (!path) continue;
+    void isReachable(path).then((reachable) => {
+      if (reachable) return;
+      card.querySelector('[data-status="declared"]')?.setAttribute('hidden', '');
+      card.querySelector('[data-status="unreachable"]')?.removeAttribute('hidden');
+    });
+  }
+</script>

@@ -4,7 +4,7 @@ import AlbumGrid from '../../../components/AlbumGrid';
 import PageHeader from '../../../components/PageHeader';
 import RelatedPosts from '../../../components/RelatedPosts';
 import ThemeRoot from '../../../theme/ThemeRoot';
-import { pageTitle } from '../../../data/site';
+import { pageTitle, trails } from '../../../data/site';
 import { formatDate, isoDate } from '../../../data/dates';
 import { getAlbums, hobbyCategory } from '../../../data/hobbies';
 import { responsiveImage } from '../../../data/images';
@@ -26,7 +26,7 @@ const relatedPosts = postsWithTag(await getPosts(), category.tag).map(toPostSumm
 ---
 
 <PageLayout title={pageTitle(category.title)} description={category.description}>
-  <PageHeader title={category.title} description={category.description} />
+  <PageHeader title={category.title} description={category.description} trail={trails.hobbies} />
   <AlbumGrid albums={albums} />
   <ThemeRoot>
     <RelatedPosts posts={relatedPosts} tag={category.tag} />

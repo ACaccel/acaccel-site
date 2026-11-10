@@ -10,7 +10,6 @@ Everything visitors read lives in `content/`; editing it needs no code changes.
 | `content/about.md`         | Introduction on `/about/`                                         |
 | `content/experience.yaml`  | Experience summary on `/about/` (hidden while empty)              |
 | `content/games.yaml`       | Games on `/hobbies/games/`                                        |
-| `content/media.yaml`       | Books, anime, dramas on `/hobbies/media/`                         |
 | `content/albums/<id>/`     | Album at `/hobbies/photos/<id>/`                                  |
 | `content/services.json`    | Services on `/services/` and the homepage                         |
 | `content/projects/<id>.md` | Project at `/projects/<id>/`; `featured` ones on the homepage     |
@@ -24,7 +23,7 @@ Everything visitors read lives in `content/`; editing it needs no code changes.
 - Texts marked optional, such as `about.cvNote` or `profile.email`, can be left empty (`''`) to
   hide them.
 - A missing key, an unknown key, or a dropped placeholder fails the build with the exact path,
-  such as `posts.tagCount: Keep the placeholders {count}`.
+  such as `posts.readingTime: Keep the placeholders {minutes}`.
 
 ## Posts
 
@@ -57,9 +56,14 @@ link stay out of the deployed site.
 
 ## Services
 
-Each key in `services.json` maps to `name`, `path` (`/name/`), `description`, and optional
-`source` (HTTPS URL), `status` (`active` default, `beta`, or `archived`; archived services lose
-the open button and leave the homepage), and `stack` (technology names).
+Each key in `services.json` maps to `name`, `url` (full HTTPS address), `description`, and optional
+`source` (HTTPS URL), `status` (`active` default, `beta`, `maintenance`, or `archived`; archived
+services lose the open button and leave the homepage), and `stack` (technology names).
+
+Visitors' browsers check each `active` or `beta` service on this site and show 無法連線
+instead of its status when it does not answer within 8 seconds. Browsers may only request this
+site, so services elsewhere, such as a Discord bot with its invite link as `url`, always show
+their written `status`.
 
 ## Projects
 
@@ -77,12 +81,11 @@ listed newest first. The file's header comment shows an example.
 
 ## Hobbies
 
-`games.yaml` and `media.yaml` are lists; their header comments show every field. Shared fields:
-unique `id`, `title`, `status`, and optional `note`, `updated` (`YYYY-MM-DD`), `post` (id of a
-longer write-up), and `link`. Games add `platform`; media add `type` (`book`, `anime`, `drama`)
-and `creator`. A `post` that is still a draft is not linked; an unknown id fails the build.
+`games.yaml` is a list; its header comment shows every field: unique `id`, `title`, `status`,
+and optional `platform`, `note`, `updated` (`YYYY-MM-DD`), `post` (id of a longer write-up), and
+`link`. A `post` that is still a draft is not linked; an unknown id fails the build.
 
-Posts tagged `games`, `media`, or `travel` appear as related posts in the matching category.
+Posts tagged `games` or `travel` appear as related posts in the matching category.
 
 ## Photos
 

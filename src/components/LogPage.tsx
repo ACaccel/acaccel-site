@@ -3,14 +3,13 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ThemeRoot from '../theme/ThemeRoot';
 import CardGrid from './CardGrid';
 import EmptyState from './EmptyState';
 import PageHeader from './PageHeader';
 import RelatedPosts from './RelatedPosts';
+import type { TrailLink } from './Trail';
 import type { LogEntry, LogGroup } from '../data/hobbies';
 import type { PostSummary } from '../data/posts';
 import { text } from '../data/text';
@@ -18,9 +17,8 @@ import { text } from '../data/text';
 interface Props {
   title: string;
   description?: string | undefined;
+  trail: TrailLink[];
   groups: LogGroup[];
-  /** Adds chips linking to each group, for long pages. */
-  groupNav?: boolean;
   relatedPosts: PostSummary[];
   relatedTag: string;
 }
@@ -30,19 +28,10 @@ function LogCard({ entry }: { entry: LogEntry }) {
   return (
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardContent sx={{ flexGrow: 1 }}>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'space-between',
-            gap: 1,
-          }}
-        >
-          <Typography variant="h3" component="h3">
-            {entry.title}
-          </Typography>
-          <Chip size="small" variant="outlined" color={entry.statusColor} label={entry.status} />
-        </Box>
+        {/* The group heading already names the status. */}
+        <Typography variant="h3" component="h3">
+          {entry.title}
+        </Typography>
         {(entry.meta || entry.updated) && (
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
             {entry.meta}
@@ -75,39 +64,19 @@ function LogCard({ entry }: { entry: LogEntry }) {
 }
 
 export default function LogPage(props: Props) {
-  const { title, description, groups, groupNav = false, relatedPosts, relatedTag } = props;
+  const { title, description, trail, groups, relatedPosts, relatedTag } = props;
   return (
     <ThemeRoot>
-      <PageHeader title={title} description={description} />
-      {groupNav && groups.length > 1 && (
-        <Stack
-          component="nav"
-          aria-label={text.hobbies.groupsLabel}
-          direction="row"
-          useFlexGap
-          sx={{ flexWrap: 'wrap', gap: 1, mb: 2 }}
-        >
-          {groups.map((group) => (
-            <Chip
-              key={group.id}
-              component="a"
-              href={`#${group.id}`}
-              clickable
-              variant="outlined"
-              label={`${group.title} (${group.entries.length})`}
-            />
-          ))}
-        </Stack>
-      )}
+      <PageHeader title={title} description={description} trail={trail} />
       {groups.length === 0 && <EmptyState>{text.hobbies.empty}</EmptyState>}
       {groups.map((group) => (
         <Box
           component="section"
           key={group.id}
           aria-labelledby={group.id}
-          sx={{ mt: 5, scrollMarginTop: '5rem' }}
+          sx={{ mt: 4, scrollMarginTop: '5rem' }}
         >
-          <Typography variant="h2" id={group.id} sx={{ mb: 2, scrollMarginTop: '5rem' }}>
+          <Typography variant="h2" id={group.id} sx={{ mb: 1.5, scrollMarginTop: '5rem' }}>
             {group.title}
           </Typography>
           <CardGrid>

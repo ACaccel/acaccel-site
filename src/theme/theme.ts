@@ -30,6 +30,14 @@ export const theme = createTheme({
   },
   shape: { borderRadius: 10 },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        // Short pages reserve the scrollbar's space too, so content does not shift between pages.
+        html: { scrollbarGutter: 'stable' },
+        // PageShell's main element grows, so the footer stays at the bottom of short pages.
+        body: { minHeight: '100vh', display: 'flex', flexDirection: 'column' },
+      },
+    },
     MuiCard: {
       defaultProps: { variant: 'outlined' },
     },

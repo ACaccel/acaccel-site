@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
-import CardGrid from './CardGrid';
-import PostCard from './PostCard';
+import PostRows from './PostRows';
 import SectionHeader from './SectionHeader';
 import { tagHref, type PostSummary } from '../data/posts';
 import { text } from '../data/text';
@@ -15,19 +14,13 @@ interface Props {
 export default function RelatedPosts({ posts, tag }: Props) {
   if (posts.length === 0) return null;
   return (
-    <Box component="section" aria-labelledby="related-heading" sx={{ mt: 8 }}>
+    <Box component="section" aria-labelledby="related-heading" sx={{ mt: 6 }}>
       <SectionHeader
         id="related-heading"
         title={text.hobbies.relatedPosts}
         more={tag ? { href: tagHref(tag), label: `#${tag}` } : undefined}
       />
-      <CardGrid>
-        {posts.map((post) => (
-          <li key={post.href}>
-            <PostCard post={post} />
-          </li>
-        ))}
-      </CardGrid>
+      <PostRows posts={posts} />
     </Box>
   );
 }

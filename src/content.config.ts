@@ -6,11 +6,11 @@ const services = defineCollection({
   loader: file('content/services.json'),
   schema: z.strictObject({
     name: z.string().min(1),
-    // A single path segment, matching how each service is mounted in nginx.
-    path: z.string().regex(/^\/[a-z0-9-]+\/$/),
+    /** Full address; services on this site's host are checked in src/data/services.ts. */
+    url: z.url({ protocol: /^https$/ }),
     description: z.string().min(1),
     source: z.url({ protocol: /^https$/ }).optional(),
-    status: z.enum(['active', 'beta', 'archived']).default('active'),
+    status: z.enum(['active', 'beta', 'maintenance', 'archived']).default('active'),
     /** Main technologies, shown as chips on /services/. */
     stack: z.array(z.string().min(1)).default([]),
   }),
@@ -101,17 +101,6 @@ const games = defineCollection({
   }),
 });
 
-const media = defineCollection({
-  loader: file('content/media.yaml'),
-  schema: z.strictObject({
-    ...logEntry,
-    type: z.enum(['book', 'anime', 'drama']),
-    status: z.enum(['in-progress', 'finished', 'paused']),
-    /** Author, studio, or director. */
-    creator: z.string().min(1).optional(),
-  }),
-});
-
 const albums = defineCollection({
   // One folder per album: albums/<id>/index.md with its photos beside it.
   loader: glob({
@@ -146,6 +135,5 @@ export const collections = {
   experience,
   projects,
   games,
-  media,
   albums,
 };

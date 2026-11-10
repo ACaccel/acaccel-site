@@ -1,13 +1,11 @@
 import type { ReactNode } from 'react';
-import ArrowBack from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import ThemeRoot from '../theme/ThemeRoot';
 import PageHeader from './PageHeader';
 import Prose from './Prose';
 import type { ResponsiveImage } from '../data/images';
-import { text } from '../data/text';
+import { trails } from '../data/site';
 
 export interface AlbumPhoto {
   image: ResponsiveImage;
@@ -32,10 +30,7 @@ export default function AlbumDetail(props: Props) {
   const { title, description, date, dateISO, location, photos, children } = props;
   return (
     <ThemeRoot>
-      <Button href="/hobbies/photos/" startIcon={<ArrowBack />} sx={{ mb: 2, ml: -1 }}>
-        {text.hobbies.photos.back}
-      </Button>
-      <PageHeader title={title} description={description}>
+      <PageHeader title={title} description={description} trail={trails.photos}>
         <time dateTime={dateISO}>{date}</time>
         {location && ` · ${location}`}
       </PageHeader>
@@ -64,7 +59,7 @@ export default function AlbumDetail(props: Props) {
                   component="img"
                   src={photo.image.src}
                   srcSet={photo.image.srcSet}
-                  sizes="(min-width: 900px) 340px, (min-width: 600px) 50vw, 100vw"
+                  sizes="(min-width: 900px) 400px, (min-width: 600px) 50vw, 100vw"
                   width={photo.image.width}
                   height={photo.image.height}
                   alt={photo.alt}

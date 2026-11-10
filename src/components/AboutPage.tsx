@@ -18,7 +18,7 @@ interface Props {
   children?: ReactNode;
 }
 
-const sectionSx = { mt: 6 };
+const sectionSx = { mt: 5 };
 
 export default function AboutPage({ experience, children }: Props) {
   return (
@@ -28,29 +28,64 @@ export default function AboutPage({ experience, children }: Props) {
 
       {experience.length > 0 && (
         <Box component="section" aria-labelledby="experience-heading" sx={sectionSx}>
-          <Typography variant="h2" id="experience-heading" sx={{ mb: 2 }}>
+          <Typography variant="h2" id="experience-heading" sx={{ mb: 1.5 }}>
             {text.about.experience}
           </Typography>
+          {/* A timeline: dates in their own column on wide screens, above each entry on phones. */}
           <Box component="ol" sx={{ m: 0, p: 0, listStyle: 'none' }}>
             {experience.map((entry) => (
               <Box
                 component="li"
                 key={entry.id}
                 sx={{
-                  py: 2,
-                  borderTop: 1,
-                  borderColor: 'divider',
-                  '&:first-of-type': { borderTop: 0 },
+                  display: 'grid',
+                  gridTemplateColumns: { xs: 'minmax(0, 1fr)', sm: '10rem minmax(0, 1fr)' },
+                  columnGap: 3,
+                  '&:last-of-type > div': { pb: 0 },
                 }}
               >
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    pt: { sm: 0.25 },
+                    pl: { xs: 3, sm: 0 },
+                    pb: { xs: 0.5, sm: 0 },
+                    borderLeft: { xs: 2, sm: 0 },
+                    borderColor: 'divider',
+                  }}
+                >
                   {entry.period}
                 </Typography>
-                <Typography variant="h3" component="h3" sx={{ mt: 0.5 }}>
-                  {entry.title}
-                </Typography>
-                <Typography color="text.secondary">{entry.organization}</Typography>
-                {entry.description && <Typography sx={{ mt: 1 }}>{entry.description}</Typography>}
+                <Box
+                  sx={{
+                    position: 'relative',
+                    pl: 3,
+                    pb: 3,
+                    borderLeft: 2,
+                    borderColor: 'divider',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      left: -7,
+                      top: '0.45em',
+                      width: 12,
+                      height: 12,
+                      borderRadius: '50%',
+                      bgcolor: 'primary.main',
+                      border: 2,
+                      borderColor: 'background.default',
+                    },
+                  }}
+                >
+                  <Typography variant="h3" component="h3">
+                    {entry.title}
+                  </Typography>
+                  <Typography color="text.secondary">{entry.organization}</Typography>
+                  {entry.description && (
+                    <Typography sx={{ mt: 0.5 }}>{entry.description}</Typography>
+                  )}
+                </Box>
               </Box>
             ))}
           </Box>
@@ -58,7 +93,7 @@ export default function AboutPage({ experience, children }: Props) {
       )}
 
       <Box component="section" aria-labelledby="contact-heading" sx={sectionSx}>
-        <Typography variant="h2" id="contact-heading" sx={{ mb: 2 }}>
+        <Typography variant="h2" id="contact-heading" sx={{ mb: 1.5 }}>
           {text.about.contact}
         </Typography>
         <Stack direction="row" useFlexGap sx={{ flexWrap: 'wrap', gap: 1.5 }}>

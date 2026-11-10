@@ -10,6 +10,6 @@ const projects = (await getProjects()).map(toProjectSummary);
 ---
 
 <PageLayout title={pageTitle(text.projects.title)} description={text.projects.description}>
-  <PageHeader title={text.projects.title} description={text.projects.description} />
+  <PageHeader title={text.projects.title} />
   <ProjectList projects={projects} />
 </PageLayout>

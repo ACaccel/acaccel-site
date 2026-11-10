@@ -28,7 +28,6 @@ const service = await getProjectService(project);
 <PageLayout
   title={pageTitle(project.data.title)}
   description={project.data.summary}
-  width="narrow"
   ogType="article"
 >
   <ProjectDetail project={toProjectSummary(project)} links={project.data.links} service={service}>

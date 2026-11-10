@@ -3,7 +3,7 @@ import { formatDate, isoDate } from './dates';
 import { getPosts, postHref, type Post } from './posts';
 import { text } from './text';
 
-export type HobbyCategoryId = 'games' | 'media' | 'photos';
+export type HobbyCategoryId = 'games' | 'photos';
 
 export interface HobbyCategory {
   id: HobbyCategoryId;
@@ -23,13 +23,6 @@ export const hobbyCategories: HobbyCategory[] = [
     tag: 'games',
   },
   {
-    id: 'media',
-    title: text.hobbies.media.title,
-    description: text.hobbies.media.description,
-    href: '/hobbies/media/',
-    tag: 'media',
-  },
-  {
     id: 'photos',
     title: text.hobbies.photos.title,
     description: text.hobbies.photos.description,
@@ -44,15 +37,11 @@ export function hobbyCategory(id: HobbyCategoryId): HobbyCategory {
   return category;
 }
 
-export type StatusColor = 'primary' | 'success' | 'default';
-
 /** Plain log entry fields for list components. */
 export interface LogEntry {
   id: string;
   title: string;
-  status: string;
-  statusColor: StatusColor;
-  /** Platform or creator. */
+  /** Platform. */
   meta?: string | undefined;
   note?: string | undefined;
   updated?: string | undefined;
@@ -67,7 +56,7 @@ export interface LogGroup {
   entries: LogEntry[];
 }
 
-type LogData = CollectionEntry<'games'>['data'] | CollectionEntry<'media'>['data'];
+type LogData = CollectionEntry<'games'>['data'];
 
 /**
  * Resolves `post` to a link. An unknown id fails the build; a post that is still a draft is
@@ -96,15 +85,12 @@ async function loadPosts(): Promise<{ posts: Post[]; allPostIds: Set<string> }> 
 
 function toLogEntry(
   entry: LogData,
-  status: { label: string; color: StatusColor },
   meta: string | undefined,
   postLink: string | undefined,
 ): LogEntry {
   return {
     id: entry.id,
     title: entry.title,
-    status: status.label,
-    statusColor: status.color,
     meta,
     note: entry.note,
     updated: entry.updated && formatDate(entry.updated),
@@ -114,17 +100,9 @@ function toLogEntry(
   };
 }
 
-const statusColors = {
-  playing: 'primary',
-  'in-progress': 'primary',
-  finished: 'success',
-  paused: 'default',
-} as const satisfies Record<string, StatusColor>;
-
 const gameStatuses = (['playing', 'finished', 'paused'] as const).map((status) => ({
   status,
   label: text.hobbies.games.status[status],
-  color: statusColors[status],
 }));
 
 /** Games grouped by status in display order; empty groups are dropped. */
@@ -137,40 +115,8 @@ export async function getGameGroups(): Promise<LogGroup[]> {
       title: status.label,
       entries: games
         .filter((game) => game.status === status.status)
-        .map((game) =>
-          toLogEntry(game, status, game.platform, resolvePost(game, posts, allPostIds)),
-        ),
+        .map((game) => toLogEntry(game, game.platform, resolvePost(game, posts, allPostIds))),
     }))
-    .filter((group) => group.entries.length > 0);
-}
-
-const mediaTypes = ['book', 'anime', 'drama'] as const;
-const mediaStatusOrder = ['in-progress', 'finished', 'paused'] as const;
-
-/** Media grouped by type; in progress first within each type. Empty groups are dropped. */
-export async function getMediaGroups(): Promise<LogGroup[]> {
-  const media = (await getCollection('media')).map((entry) => entry.data).sort(byUpdated);
-  const { posts, allPostIds } = await loadPosts();
-  return mediaTypes
-    .map((type) => {
-      // Books are read; anime and dramas are watched, so their status words differ.
-      const labels = text.hobbies.media.status[type === 'book' ? 'book' : 'watch'];
-      return {
-        id: type,
-        title: text.hobbies.media.types[type],
-        entries: media
-          .filter((item) => item.type === type)
-          .sort((a, b) => mediaStatusOrder.indexOf(a.status) - mediaStatusOrder.indexOf(b.status))
-          .map((item) =>
-            toLogEntry(
-              item,
-              { label: labels[item.status], color: statusColors[item.status] },
-              item.creator,
-              resolvePost(item, posts, allPostIds),
-            ),
-          ),
-      };
-    })
     .filter((group) => group.entries.length > 0);
 }
 
@@ -186,7 +132,6 @@ export async function getAlbums(): Promise<Album[]> {
 export async function getHobbyCounts(): Promise<Record<HobbyCategoryId, number>> {
   return {
     games: (await getCollection('games')).length,
-    media: (await getCollection('media')).length,
     photos: (await getAlbums()).length,
   };
 }

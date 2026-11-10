@@ -48,15 +48,17 @@ Deployment and rollback: [docs/deployment.md](docs/deployment.md).
   `text` from `src/data/text.ts`. ESLint rejects Chinese text written directly in `src/`.
 - The repository is public: list only public services, and commit no private service names,
   paths, internal ports, or personal data beyond what the site already publishes.
-- Adding a service is a data-only change to `services.json`. Paths are single segments such as
-  `/name/` and must not be a site path (`reservedPaths` in `src/data/services.ts`).
+- Adding a service is a data-only change to `services.json`. Its `url` is a full HTTPS address;
+  on this site's host the path is a single segment such as `/name/` and must not be a site path
+  (`reservedPaths` in `src/data/services.ts`).
 - UI uses Material UI components and design; hand-build only what it cannot cover, in the same
   style. Components never hydrate (no `client:*` directives); small browser behavior goes in a
   bundled `<script>` in an `.astro` file. Every React component rendered from Astro wraps its
   content in `ThemeRoot`.
 - Material UI renders inline `<style>` elements, so the CSP allows `'unsafe-inline'` in
   `style-src`. Scripts stay strict: `script-src 'self'` only, no inline scripts or handlers
-  (`npm run test:dist` enforces this).
+  (`npm run test:dist` enforces this). `connect-src 'self'` lets the service status check
+  request this site only.
 - Album photos are public: commit them only after `npm run photos` removes their metadata.
 - Output stays fully static; the site runs no server process.
 - This repository holds no Nginx or TLS configuration; routing is the ingress route in

@@ -13,7 +13,7 @@ interface Props {
 /** Section title row; render inside a ThemeRoot. */
 export default function SectionHeader({ id, title, more }: Props) {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
       <Typography variant="h2" id={id}>
         {title}
       </Typography>

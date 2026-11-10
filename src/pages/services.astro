@@ -1,5 +1,6 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
+import ServiceStatus from '../components/ServiceStatus.astro';
 import PageHeader from '../components/PageHeader';
 import ServiceList from '../components/ServiceList';
 import { pageTitle } from '../data/site';
@@ -10,6 +11,7 @@ const services = await getServices();
 ---
 
 <PageLayout title={pageTitle(text.services.title)} description={text.services.description}>
-  <PageHeader title={text.services.title} description={text.services.description} />
+  <PageHeader title={text.services.title} />
   <ServiceList services={services} />
+  <ServiceStatus />
 </PageLayout>

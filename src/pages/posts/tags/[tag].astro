@@ -3,7 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import PageLayout from '../../../layouts/PageLayout.astro';
 import PageHeader from '../../../components/PageHeader';
 import PostList from '../../../components/PostList';
-import { pageTitle } from '../../../data/site';
+import { pageTitle, trails } from '../../../data/site';
 import { fill, text } from '../../../data/text';
 import { getPosts, getTagCounts, postsWithTag, toPostSummary } from '../../../data/posts';
 
@@ -23,6 +23,6 @@ const tagged = postsWithTag(posts, tag);
   description={fill(text.posts.tagDescription, { tag })}
   width="narrow"
 >
-  <PageHeader title={`#${tag}`} description={fill(text.posts.tagCount, { count: tagged.length })} />
+  <PageHeader title={`#${tag}`} trail={trails.posts} />
   <PostList posts={tagged.map(toPostSummary)} tags={tags} activeTag={tag} />
 </PageLayout>

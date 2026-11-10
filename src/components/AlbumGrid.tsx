@@ -38,7 +38,7 @@ export default function AlbumGrid({ albums }: { albums: AlbumSummary[] }) {
                   component="img"
                   src={album.cover.src}
                   srcSet={album.cover.srcSet}
-                  sizes="(min-width: 900px) 340px, (min-width: 600px) 50vw, 100vw"
+                  sizes="(min-width: 900px) 400px, (min-width: 600px) 50vw, 100vw"
                   width={album.cover.width}
                   height={album.cover.height}
                   alt={album.coverAlt}

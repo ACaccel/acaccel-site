@@ -11,7 +11,7 @@ export default function ServiceList({ services }: { services: Service[] }) {
       {services.length > 0 ? (
         <CardGrid columns={2}>
           {services.map((service) => (
-            <li key={service.path}>
+            <li key={service.url}>
               <ServiceCard service={service} detailed />
             </li>
           ))}

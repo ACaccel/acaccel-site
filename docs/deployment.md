@@ -67,7 +67,7 @@ route:
   headers:
     csp: >-
       default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self';
-      base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+      connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
 ```
 
 Notes:

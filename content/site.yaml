@@ -24,13 +24,15 @@ site:
   sourceUrl: https://github.com/ACaccel/acaccel-site
 
 nav:
-  posts: 文章
-  hobbies: 興趣
-  projects: 專案
   services: 服務
+  posts: 文章
+  projects: 專案
+  hobbies: 興趣
   about: 關於
   # Screen reader name of the navigation bar.
   label: 主要導覽
+  # Screen reader name of the parent page links above a page title.
+  breadcrumb: 頁面路徑
 
 footer:
   email: Email
@@ -60,12 +62,12 @@ home:
 
 posts:
   title: 文章
+  # Search engine and link preview summary; not shown on the page.
   description: '{name} 的文章。'
-  empty: 目前還沒有文章。
+  empty: Now Loading...
   allTags: 全部
   tagsLabel: 標籤
   tagDescription: '{name} 標記為 #{tag} 的文章。'
-  tagCount: 共 {count} 篇文章
   updated: 更新於 {date}
   readingTime: 約 {minutes} 分鐘
   toc: 目錄
@@ -83,6 +85,7 @@ now:
 
 about:
   title: 關於我
+  # Search engine and link preview summary; not shown on the page.
   description: '{name} 的自我介紹、經歷與聯絡方式。'
   experience: 經歷
   contact: 聯絡方式
@@ -93,31 +96,36 @@ about:
 
 services:
   title: 服務
+  # Search engine and link preview summary; not shown on the page.
   description: 部署的公開服務。
-  empty: 目前沒有公開的服務。
+  empty: Now Loading...
   open: 開啟服務
   source: 原始碼
   status:
     active: 運作中
     beta: 測試中
+    maintenance: 維護中
     archived: 已封存
+  # Shown instead of the status when the browser cannot reach the service.
+  unreachable: 無法連線
 
 projects:
   title: 專案
+  # Search engine and link preview summary; not shown on the page.
   description: 參與過的專案：要解決的問題、我的角色、做法與成果。
-  empty: 專案介紹準備中。
+  empty: Now Loading...
   role: 角色：{role}
   open: 開啟服務
 
 hobbies:
   title: 興趣
-  description: 工作之外的紀錄：遊戲、閱讀與影劇、攝影與旅行。
-  empty: 紀錄整理中。
+  # Search engine and link preview summary; not shown on the page.
+  description: 工作之外的紀錄：遊戲、攝影與旅行。
+  empty: Now Loading...
   entryCount: '{count} 筆紀錄'
   relatedPosts: 相關文章
   readPost: 閱讀心得
   link: 相關連結
-  groupsLabel: 分類
   games:
     title: 遊戲
     description:
@@ -125,28 +133,11 @@ hobbies:
       playing: 在玩
       finished: 玩完
       paused: 擱置
-  media:
-    title: 閱讀／動畫／影劇
-    description:
-    types:
-      book: 書
-      anime: 動畫
-      drama: 影劇
-    status:
-      book:
-        in-progress: 閱讀中
-        finished: 讀完
-        paused: 擱置
-      watch:
-        in-progress: 觀看中
-        finished: 看完
-        paused: 擱置
   photos:
     title: 攝影／旅行
     description:
-    empty: 相簿整理中。
+    empty: Now Loading...
     albumCount: '{count} 本相簿'
-    back: 所有相簿
 
 notFound:
   title: 找不到頁面

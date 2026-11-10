@@ -1,13 +1,15 @@
 {
   "card-together": {
     "name": "Card Together",
-    "path": "/card-together/",
-    "description": "多人線上撲克牌遊戲平台，提供橋牌、大老二、德州撲克等多種玩法。",
+    "url": "https://acserver.csie.org/card-together/",
+    "description": "多人線上撲克牌遊戲平台，包含橋牌、大老二、牌七、德州撲克等模式",
     "source": "https://github.com/FatCatIsFat0424/card-together"
   },
-  "larp": {
-    "name": "LARP Platform",
-    "path": "/larp/",
-    "description": "繁體中文社交推理遊戲平台，提供六人狼人殺。"
+  "bot-fleet": {
+    "name": "Pleiades Fleet",
+    "url": "https://discord.com/oauth2/authorize?client_id=892391543061770291",
+    "description": "TypeScript 開發的 Discord Bot 框架，內建bot「初華黑大將軍」開放使用",
+    "source": "https://github.com/ACaccel/pleiades-fleet",
+    "status": "active"
   }
 }
