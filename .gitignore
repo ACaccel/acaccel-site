@@ -20,9 +20,6 @@ npm-debug.log*
 # Project-local conda environment
 .conda/
 
-# Local deployment runtime
-.deploy/
-
 # Editor and OS files
 .DS_Store
 .vscode/
